@@ -1,0 +1,40 @@
+﻿<Window x:Class="HomeWork11_1.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HomeWork11_1"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="479.465" Width="800">
+    <Grid Margin="0,0,0,1">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="103*"/>
+            <RowDefinition Height="299*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="173*"/>
+            <ColumnDefinition Width="91*"/>
+        </Grid.ColumnDefinitions>
+        <ComboBox x:Name="cbUser" HorizontalAlignment="Left" Height="28" Margin="22,58,0,0" VerticalAlignment="Top" Width="181" SelectionChanged="comboBox_SelectionChanged">
+            <ComboBoxItem Content="Консультант"/>
+            <ComboBoxItem Content="Менеджер"/>
+        </ComboBox>
+        <Label x:Name="label" Content="Пользователь" HorizontalAlignment="Left" Height="25" Margin="22,28,0,0" VerticalAlignment="Top" Width="181"/>
+        <TextBox x:Name="tbFirstName" HorizontalAlignment="Left" Height="25" Margin="310,29,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="191" Grid.Row="1"/>
+        <Label x:Name="label1" Content="Имя" HorizontalAlignment="Left" Height="36" Margin="14,25,0,0" VerticalAlignment="Top" Width="89" FontSize="16" Grid.Row="1"/>
+        <Label x:Name="label2" Content="Фамилия (поле для выбора клиента)" HorizontalAlignment="Left" Height="31" Margin="12,55,0,0" VerticalAlignment="Top" Width="279" FontSize="16" Grid.Row="1"/>
+        <Label x:Name="label3" Content="Отчество" HorizontalAlignment="Left" Height="30" Margin="12,115,0,0" VerticalAlignment="Top" Width="94" FontSize="16" Grid.Row="1"/>
+        <Label x:Name="label4" Content="Номер телефона" HorizontalAlignment="Left" Height="28" Margin="11,143,0,0" VerticalAlignment="Top" Width="152" RenderTransformOrigin="0.38,0.577" FontSize="16" Grid.Row="1"/>
+        <Label x:Name="label5" Content="Серия и номер паспорта" HorizontalAlignment="Left" Height="31" Margin="10,171,0,0" VerticalAlignment="Top" Width="192" FontSize="16" Grid.Row="1"/>
+        <Button x:Name="button" Content="Внести изменения" HorizontalAlignment="Left" Height="29" Margin="14,255,0,0" Grid.Row="1" VerticalAlignment="Top" Width="377" Click="button_Click"/>
+        <ComboBox x:Name="cbLastName" HorizontalAlignment="Left" Height="24" Margin="310,59,0,0" Grid.Row="1" VerticalAlignment="Top" Width="191" SelectionChanged="comboBox1_SelectionChanged"/>
+        <Button x:Name="button1" Content="Добавить информацию" HorizontalAlignment="Left" Height="28" Margin="14,289,0,0" Grid.Row="1" VerticalAlignment="Top" Width="377" Click="button1_Click"/>
+        <Label x:Name="label6" Content="Фамилия (поле для редактирования)" HorizontalAlignment="Left" Height="29" Margin="12,86,0,0" Grid.Row="1" VerticalAlignment="Top" Width="291" FontSize="16"/>
+        <TextBox x:Name="tbLastName" HorizontalAlignment="Left" Height="24" Margin="310,89,0,0" Grid.Row="1" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="191"/>
+        <TextBox x:Name="tbMiddleName" HorizontalAlignment="Left" Height="24" Margin="310,118,0,0" Grid.Row="1" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="191"/>
+        <TextBox x:Name="tbNumberTel" HorizontalAlignment="Left" Height="24" Margin="310,147,0,0" Grid.Row="1" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="191"/>
+        <TextBox x:Name="tbPassport" HorizontalAlignment="Left" Height="24" Margin="310,176,0,0" Grid.Row="1" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="191"/>
+        <Button x:Name="button2" Content="Загрузить данные в программу" HorizontalAlignment="Left" Height="29" Margin="14,221,0,0" Grid.Row="1" VerticalAlignment="Top" Width="377" Click="button2_Click"/>
+
+    </Grid>
+</Window>
