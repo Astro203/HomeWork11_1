@@ -17,6 +17,81 @@ using System.Windows.Shapes;
 
 namespace HomeWork11_1
 {
+    public interface InterfaceConsultant
+    {
+        void EditInformationForConsultant(MainWindow M);
+    }
+
+    public interface InterfaceManager
+    {
+        void EditInformationForManager(MainWindow M);
+    }
+
+    class NewClass : BankClient, InterfaceConsultant, InterfaceManager
+    { 
+        public NewClass(string FirstName, string LastName, string MiddleName, string NumberTel, string SerialAndNumberOfPassport,
+            string Date, string CorrectFields, string TypeFields, string User)
+            : base(FirstName, LastName, MiddleName, NumberTel, SerialAndNumberOfPassport, Date, CorrectFields, TypeFields, User)
+        {
+
+        }
+
+        public void EditInformationForConsultant(MainWindow M)
+        {
+            string json = "";
+            string file = "Client.json";
+            List<Manager> manager = new List<Manager>();
+            if (File.Exists(file))
+            {
+                json = File.ReadAllText(file);
+                manager = JsonConvert.DeserializeObject<List<Manager>>(json);
+                manager[M.cbLastName.SelectedIndex].Date = Convert.ToString(DateTime.Now);
+                manager[M.cbLastName.SelectedIndex].CorrectFields += "Номер телефона ";
+                manager[M.cbLastName.SelectedIndex].User = M.cbUser.Text;
+                MessageBox.Show($"Изменены поля: {manager[M.cbLastName.SelectedIndex].CorrectFields}");
+                json = JsonConvert.SerializeObject(manager);
+                File.WriteAllText(file, json);
+            }
+        }
+
+        public void EditInformationForManager(MainWindow M)
+        {
+            string json = "";
+            string file = "Client.json";
+            List<Manager> manager = new List<Manager>();
+            if (File.Exists(file))
+            {
+                json = File.ReadAllText(file);
+                manager = JsonConvert.DeserializeObject<List<Manager>>(json);
+                manager[M.cbLastName.SelectedIndex].Date = Convert.ToString(DateTime.Now);
+                if (manager[M.cbLastName.SelectedIndex].FirstName != M.tbFirstName.Text)
+                {
+                    manager[M.cbLastName.SelectedIndex].CorrectFields = "Имя ";
+                }
+                if(manager[M.cbLastName.SelectedIndex].LastName != M.tbLastName.Text)
+                {
+                    manager[M.cbLastName.SelectedIndex].CorrectFields += "Фамилия ";
+                }
+                if(manager[M.cbLastName.SelectedIndex].MiddleName != M.tbMiddleName.Text)
+                {
+                    manager[M.cbLastName.SelectedIndex].CorrectFields += "Отчество ";
+                }
+                if(manager[M.cbLastName.SelectedIndex].NumberTel != M.tbNumberTel.Text)
+                {
+                    manager[M.cbLastName.SelectedIndex].CorrectFields += "Номер телефона ";
+                }
+                if(manager[M.cbLastName.SelectedIndex].SerialAndNumberOfPassport != M.tbPassport.Text)
+                {
+                    manager[M.cbLastName.SelectedIndex].CorrectFields = "Серия и номер паспорта";
+                }
+                manager[M.cbLastName.SelectedIndex].User = M.cbUser.Text;
+                MessageBox.Show($"Изменены поля: {manager[M.cbLastName.SelectedIndex].CorrectFields}");
+                json = JsonConvert.SerializeObject(manager);
+                File.WriteAllText(file, json);
+            }
+        }
+    }
+    
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
@@ -27,100 +102,55 @@ namespace HomeWork11_1
             InitializeComponent();
         }
 
-        public void ShowClient()
-        {
-            string file = "Client.json";
-            if (File.Exists(file))
-            {
-                string json = File.ReadAllText(file);
-                List<Consultant> Clients = new List<Consultant>(); 
-                Clients = JsonConvert.DeserializeObject<List<Consultant>>(json);
-                tbFirstName.Text = Clients[cbLastName.SelectedIndex].FirstName;
-                tbLastName.Text = Clients[cbLastName.SelectedIndex].LastName;
-                tbMiddleName.Text = Clients[cbLastName.SelectedIndex].MiddleName;
-                tbNumberTel.Text = Clients[cbLastName.SelectedIndex].NumberTel;
-                JsonConvert.SerializeObject(file);
-                if (cbUser.Text == "Консультант") tbPassport.Text = "***********"; else tbPassport.Text = Clients[cbLastName.SelectedIndex].SerialAndNumberOfPassport;
-            }
-        }
-
-        public void CreateClient()
-        {
-            string json = "";
-            string file = "Client.json";
-            List<Manager> Clients = new List<Manager>();
-            if (File.Exists(file))
-            {
-                json = File.ReadAllText(file);
-                Clients = JsonConvert.DeserializeObject<List<Manager>>(json);
-            }
-            Clients.Add(
-                new Manager(
-                    tbFirstName.Text,
-                    tbLastName.Text,
-                    tbMiddleName.Text,
-                    tbNumberTel.Text,
-                    tbPassport.Text));
-            json = JsonConvert.SerializeObject(Clients);
-            File.WriteAllText(file, json);
-            MessageBox.Show("Информация добавлена");
-
-        }
         private void button_Click(object sender, RoutedEventArgs e)
         {
-            string file = "Client.json.json";
-            string json = File.ReadAllText(file);
-            List<Consultant> Clients = new List<Consultant>();
-            Clients = JsonConvert.DeserializeObject<List<Consultant>>(json);
-            if (tbNumberTel.Text != "")
+            if(cbUser.Text == "Консультант")
             {
-                Clients[cbLastName.SelectedIndex].NumberTel = tbNumberTel.Text;
+                Consultant consultant = new Consultant(tbFirstName.Text, tbLastName.Text, tbMiddleName.Text, tbNumberTel.Text, tbPassport.Text, tbDate.Text,
+                    tbCorrect.Text, tbType.Text, tbUser.Text);
+                consultant.EditInfo(tbNumberTel.Text);              
             }
             else
             {
-                tbNumberTel.Text = "8-999-999-99-99";
-                Clients[cbLastName.SelectedIndex].NumberTel = tbNumberTel.Text;
+                Manager manager = new Manager(tbFirstName.Text, tbLastName.Text, tbMiddleName.Text, tbNumberTel.Text, tbPassport.Text, tbDate.Text,
+                    tbCorrect.Text, tbType.Text, tbUser.Text);
+                manager.EditInfo(this);
             }
-            json = JsonConvert.SerializeObject(Clients);
-            File.WriteAllText(file, json);
         }
 
         private void comboBox1_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ShowClient();
-        }
-        private void comboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            
+            BankClient.ShowClient(this);
         }
 
         private void button1_Click(object sender, RoutedEventArgs e)
         {
-            if (cbUser.Text == "Менеджер")
+            if(cbUser.Text == "Менеджер")
             {
-                CreateClient();
+                Manager.AddInfo(this);
+                MessageBox.Show("Информация добавлена");
             }
         }
 
         private void button2_Click(object sender, RoutedEventArgs e)
         {
-            string file = "Client.json";
-            if (File.Exists(file))
+            if (cbUser.Text == "Консультант")
             {
-                string json = File.ReadAllText(file);
-                List<Consultant> Clients = new List<Consultant>();
-                Clients = JsonConvert.DeserializeObject<List<Consultant>>(json);
-                cbLastName.Items.Clear();
-                foreach (var item in Clients)
-                {
-                    cbLastName.Items.Add(item.LastName);
-                }
-                tbFirstName.Text = Clients[0].FirstName;
-                tbLastName.Text = Clients[0].LastName;
-                tbMiddleName.Text = Clients[0].MiddleName;
-                tbNumberTel.Text = Clients[0].NumberTel;
-                JsonConvert.SerializeObject(file);
-                tbPassport.Text = "***********";
+                Consultant consultant = new Consultant(tbFirstName.Text, tbLastName.Text, tbMiddleName.Text, tbNumberTel.Text, tbPassport.Text, tbDate.Text,
+                    tbCorrect.Text, tbType.Text, tbUser.Text);
+                consultant.GetInfo(this);
+                InterfaceConsultant interfaceconsultant = new NewClass(tbFirstName.Text, tbLastName.Text, tbMiddleName.Text, tbNumberTel.Text, tbPassport.Text, tbDate.Text,
+                    tbCorrect.Text, tbType.Text, tbUser.Text);
+                interfaceconsultant.EditInformationForConsultant(this);
+            }
+            else
+            {
+                Manager manager = new Manager(tbFirstName.Text, tbLastName.Text, tbMiddleName.Text, tbNumberTel.Text, tbPassport.Text, tbDate.Text,
+                    tbCorrect.Text, tbType.Text, tbUser.Text);
+                manager.GetInfo(this);
+                InterfaceManager interfacemanager = new NewClass(tbFirstName.Text, tbLastName.Text, tbMiddleName.Text, tbNumberTel.Text, tbPassport.Text, tbDate.Text,
+                    tbCorrect.Text, tbType.Text, tbUser.Text);
+                interfacemanager.EditInformationForManager(this);
             }
         }
     }
