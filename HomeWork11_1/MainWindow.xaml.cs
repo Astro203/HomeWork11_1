@@ -1,6 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using GalaSoft.MvvmLight.CommandWpf;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -17,78 +19,12 @@ using System.Windows.Shapes;
 
 namespace HomeWork11_1
 {
-    public interface InterfaceConsultant
-    {
-        void EditInformationForConsultant(MainWindow M);
-    }
-
-    public interface InterfaceManager
-    {
-        void EditInformationForManager(MainWindow M);
-    }
-
-    class NewClass : BankClient, InterfaceConsultant, InterfaceManager
+    class NewClass : BankClient
     { 
-        public NewClass(string FirstName, string LastName, string MiddleName, string NumberTel, string SerialAndNumberOfPassport,
-            string Date, string CorrectFields, string TypeFields, string User)
-            : base(FirstName, LastName, MiddleName, NumberTel, SerialAndNumberOfPassport, Date, CorrectFields, TypeFields, User)
+        public NewClass(string FirstName, string LastName, string MiddleName, string NumberTel, string SerialAndNumberOfPassport, int DepartamentID)
+            : base(FirstName, LastName, MiddleName, NumberTel, SerialAndNumberOfPassport, DepartamentID)
         {
 
-        }
-
-        public void EditInformationForConsultant(MainWindow M)
-        {
-            string json = "";
-            string file = "Client.json";
-            List<Manager> manager = new List<Manager>();
-            if (File.Exists(file))
-            {
-                json = File.ReadAllText(file);
-                manager = JsonConvert.DeserializeObject<List<Manager>>(json);
-                manager[M.cbLastName.SelectedIndex].Date = Convert.ToString(DateTime.Now);
-                manager[M.cbLastName.SelectedIndex].CorrectFields += "Номер телефона ";
-                manager[M.cbLastName.SelectedIndex].User = M.cbUser.Text;
-                MessageBox.Show($"Изменены поля: {manager[M.cbLastName.SelectedIndex].CorrectFields}");
-                json = JsonConvert.SerializeObject(manager);
-                File.WriteAllText(file, json);
-            }
-        }
-
-        public void EditInformationForManager(MainWindow M)
-        {
-            string json = "";
-            string file = "Client.json";
-            List<Manager> manager = new List<Manager>();
-            if (File.Exists(file))
-            {
-                json = File.ReadAllText(file);
-                manager = JsonConvert.DeserializeObject<List<Manager>>(json);
-                manager[M.cbLastName.SelectedIndex].Date = Convert.ToString(DateTime.Now);
-                if (manager[M.cbLastName.SelectedIndex].FirstName != M.tbFirstName.Text)
-                {
-                    manager[M.cbLastName.SelectedIndex].CorrectFields = "Имя ";
-                }
-                if(manager[M.cbLastName.SelectedIndex].LastName != M.tbLastName.Text)
-                {
-                    manager[M.cbLastName.SelectedIndex].CorrectFields += "Фамилия ";
-                }
-                if(manager[M.cbLastName.SelectedIndex].MiddleName != M.tbMiddleName.Text)
-                {
-                    manager[M.cbLastName.SelectedIndex].CorrectFields += "Отчество ";
-                }
-                if(manager[M.cbLastName.SelectedIndex].NumberTel != M.tbNumberTel.Text)
-                {
-                    manager[M.cbLastName.SelectedIndex].CorrectFields += "Номер телефона ";
-                }
-                if(manager[M.cbLastName.SelectedIndex].SerialAndNumberOfPassport != M.tbPassport.Text)
-                {
-                    manager[M.cbLastName.SelectedIndex].CorrectFields = "Серия и номер паспорта";
-                }
-                manager[M.cbLastName.SelectedIndex].User = M.cbUser.Text;
-                MessageBox.Show($"Изменены поля: {manager[M.cbLastName.SelectedIndex].CorrectFields}");
-                json = JsonConvert.SerializeObject(manager);
-                File.WriteAllText(file, json);
-            }
         }
     }
     
@@ -97,60 +33,92 @@ namespace HomeWork11_1
     /// </summary>
     public partial class MainWindow : Window
     {
+        string json;
         public MainWindow()
         {
             InitializeComponent();
+            cbUser.Text = "Консультант";
         }
 
         private void button_Click(object sender, RoutedEventArgs e)
         {
             if(cbUser.Text == "Консультант")
             {
-                Consultant consultant = new Consultant(tbFirstName.Text, tbLastName.Text, tbMiddleName.Text, tbNumberTel.Text, tbPassport.Text, tbDate.Text,
-                    tbCorrect.Text, tbType.Text, tbUser.Text);
-                consultant.EditInfo(tbNumberTel.Text);              
+                MessageBox.Show("Консультант не может вносить изменения");
             }
             else
             {
-                Manager manager = new Manager(tbFirstName.Text, tbLastName.Text, tbMiddleName.Text, tbNumberTel.Text, tbPassport.Text, tbDate.Text,
-                    tbCorrect.Text, tbType.Text, tbUser.Text);
-                manager.EditInfo(this);
+                Manager.EditClient(this);
+                MessageBox.Show("");
             }
         }
-
-        private void comboBox1_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            BankClient.ShowClient(this);
-        }
-
         private void button1_Click(object sender, RoutedEventArgs e)
         {
             if(cbUser.Text == "Менеджер")
             {
-                Manager.AddInfo(this);
+                Manager.AddClient(this);
                 MessageBox.Show("Информация добавлена");
+            }
+            else
+            {
+                MessageBox.Show("Консультант не может добавлять клиентов");
             }
         }
 
         private void button2_Click(object sender, RoutedEventArgs e)
         {
+            if (File.Exists("Departaments.json"))
+            { 
+                json = File.ReadAllText("Departaments.json");
+                List<Departament> Departaments = new List<Departament>();
+                Departaments = JsonConvert.DeserializeObject<List<Departament>>(json);
+                JsonConvert.SerializeObject(Departaments);
+                lvDepartaments.ItemsSource = Departaments;
+            }
+            else MessageBox.Show("Нет списка департаментов");
+        }
+
+        private void lvDepartaments_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            json = File.ReadAllText("Clients.json");
+            List<BankClient> Clients = new List<BankClient>();
+            Clients = JsonConvert.DeserializeObject<List<BankClient>>(json);
+            JsonConvert.SerializeObject(Clients);
             if (cbUser.Text == "Консультант")
             {
-                Consultant consultant = new Consultant(tbFirstName.Text, tbLastName.Text, tbMiddleName.Text, tbNumberTel.Text, tbPassport.Text, tbDate.Text,
-                    tbCorrect.Text, tbType.Text, tbUser.Text);
-                consultant.GetInfo(this);
-                InterfaceConsultant interfaceconsultant = new NewClass(tbFirstName.Text, tbLastName.Text, tbMiddleName.Text, tbNumberTel.Text, tbPassport.Text, tbDate.Text,
-                    tbCorrect.Text, tbType.Text, tbUser.Text);
-                interfaceconsultant.EditInformationForConsultant(this);
+                foreach (var item in Clients)
+                {
+                    item.NumberTel = "***********";
+                }
             }
-            else
+            lvClients.ItemsSource = Clients.Where(findID);          
+        }
+
+        private bool findID(BankClient arg)
+        {
+            return arg.DepartamentID == (lvDepartaments.SelectedItem as Departament).DepartamentID;
+        }
+
+        private void button3_Click(object sender, RoutedEventArgs e)
+        {
+            if(File.Exists("Clients.json"))
             {
-                Manager manager = new Manager(tbFirstName.Text, tbLastName.Text, tbMiddleName.Text, tbNumberTel.Text, tbPassport.Text, tbDate.Text,
-                    tbCorrect.Text, tbType.Text, tbUser.Text);
-                manager.GetInfo(this);
-                InterfaceManager interfacemanager = new NewClass(tbFirstName.Text, tbLastName.Text, tbMiddleName.Text, tbNumberTel.Text, tbPassport.Text, tbDate.Text,
-                    tbCorrect.Text, tbType.Text, tbUser.Text);
-                interfacemanager.EditInformationForManager(this);
+                json = File.ReadAllText("Clients.json");
+                List<BankClient> Clients = new List<BankClient>();
+                Clients = JsonConvert.DeserializeObject<List<BankClient>>(json);
+                Clients.RemoveAt(lvClients.SelectedIndex);
+                json = JsonConvert.SerializeObject(Clients);
+                File.WriteAllText("Clients.json",json);
+                MessageBox.Show("Запись удалена");
+            }
+        }
+
+        private void button4_Click(object sender, RoutedEventArgs e)
+        {
+            if (cbUser.Text == "Менеджер")
+            {
+                Manager.AddDepartament(this);
+                MessageBox.Show("Депаратмент добавлен");
             }
         }
     }

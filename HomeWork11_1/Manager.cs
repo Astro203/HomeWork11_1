@@ -5,39 +5,40 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace HomeWork11_1
 {
     class Manager : BankClient
     {
-        public Manager(string FirstName, string LastName, string MiddleName, string NumberTel, string SerialAndNumberOfPassport,
-            string Date, string CorrectFields, string TypeFields, string User)
-            : base(FirstName, LastName, MiddleName, NumberTel, SerialAndNumberOfPassport, Date, CorrectFields, TypeFields, User)
+        public Manager(string FirstName, string LastName, string MiddleName, string NumberTel, string SerialAndNumbeOfPassport, int DepartamentID)
+            : base(FirstName, LastName, MiddleName, NumberTel, SerialAndNumbeOfPassport, DepartamentID)
         {
 
         }
-        public void GetInfo(MainWindow M)
+        public static void AddDepartament(MainWindow M)
         {
-            string file = "Client.json";
+            string json = "";
+            string file = "Departaments.json";
+            List<Departament> departament = new List<Departament>();
             if (File.Exists(file))
             {
-                string json = File.ReadAllText(file);
-                List<BankClient> BankClients = new List<BankClient>();
-                BankClients = JsonConvert.DeserializeObject<List<BankClient>>(json);
-                JsonConvert.SerializeObject(file);
-                M.cbLastName.Items.Clear();
-                foreach (var item in BankClients)
+                json = File.ReadAllText(file);
+                departament = JsonConvert.DeserializeObject<List<Departament>>(json);
+                if (!departament.Exists(x => x.Name == M.tbDep.Text))
                 {
-                    M.cbLastName.Items.Add(item.LastName);
+                    departament.Add
+                    (new Departament(
+                         M.tbDep.Text,
+                         departament.Count));
                 }
-                M.tbFirstName.Text = BankClients[0].FirstName;
-                M.tbLastName.Text = BankClients[0].LastName;
-                M.tbMiddleName.Text = BankClients[0].MiddleName;
-                M.tbNumberTel.Text = BankClients[0].NumberTel;
-                M.tbPassport.Text = BankClients[0].SerialAndNumberOfPassport;
+                else MessageBox.Show("Департамент с таким именем уже существует");
+                json = JsonConvert.SerializeObject(departament);
+                File.WriteAllText(file, json);
             }
+            M.lvDepartaments.ItemsSource = departament;
         }
-        public void EditInfo(MainWindow M)
+        public static void EditClient(MainWindow M)
         {
             string json = "";
             string file = "Client.json";
@@ -46,16 +47,19 @@ namespace HomeWork11_1
             {
                 json = File.ReadAllText(file);
                 manager = JsonConvert.DeserializeObject<List<Manager>>(json);
-                manager[M.cbLastName.SelectedIndex].FirstName = M.tbFirstName.Text;
-                manager[M.cbLastName.SelectedIndex].LastName = M.tbLastName.Text;
-                manager[M.cbLastName.SelectedIndex].MiddleName = M.tbMiddleName.Text;
-                manager[M.cbLastName.SelectedIndex].NumberTel = M.tbNumberTel.Text;
-                manager[M.cbLastName.SelectedIndex].SerialAndNumberOfPassport = M.tbPassport.Text;
+                manager.Add
+                    (new Manager(
+                         M.tbFirstName.Text,
+                         M.tbLastName.Text,
+                         M.tbMiddleName.Text,
+                         M.tbNumberTel.Text,
+                         M.tbPassport.Text,
+                         2));
                 json = JsonConvert.SerializeObject(manager);
                 File.WriteAllText(file, json);
-            }
+            }          
         }
-        public static void AddInfo(MainWindow M)
+        public static void AddClient(MainWindow M)
         {
             string json = "";
             string file = "Client.json";
@@ -71,9 +75,28 @@ namespace HomeWork11_1
                     M.tbLastName.Text,
                     M.tbMiddleName.Text,
                     M.tbNumberTel.Text,
-                    M.tbPassport.Text),"","","","");
+                    M.tbPassport.Text,
+                    findDepID(M.lvDepartaments.SelectedItem.ToString())));
             json = JsonConvert.SerializeObject(manager);
             File.WriteAllText(file, json);
+        }
+
+        private static int findDepID(string Name)
+        {
+            string file = "Departaments.json";
+            if (File.Exists(file))
+            {
+                string json = File.ReadAllText(file);
+                List<Departament> departaments = new List<Departament>();
+                departaments = JsonConvert.DeserializeObject<List<Departament>>(json);
+                foreach (var item in departaments)
+                {
+                    if (item.Name == Name) return item.DepartamentID;
+                }
+                json = JsonConvert.SerializeObject(departaments);
+                File.WriteAllText(file, json);
+            }
+            return 0;
         }
     }
 }

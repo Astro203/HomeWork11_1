@@ -5,40 +5,83 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HomeWork11_1"
         mc:Ignorable="d"
-        Title="MainWindow" Height="669.465" Width="800">
+        Title="MainWindow" Height="542.465" Width="1258">
     <Grid Margin="0,0,0,1">
         <Grid.RowDefinitions>
-            <RowDefinition Height="103*"/>
-            <RowDefinition Height="299*"/>
+            <RowDefinition Height="79*"/>
+            <RowDefinition Height="345*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="173*"/>
-            <ColumnDefinition Width="91*"/>
+            <ColumnDefinition Width="429*"/>
+            <ColumnDefinition Width="821*"/>
         </Grid.ColumnDefinitions>
 
-        <Label x:Name="label" Content="Пользователь" HorizontalAlignment="Left" Height="25" Margin="22,28,0,0" VerticalAlignment="Top" Width="181"/>
-        <TextBox x:Name="tbFirstName" HorizontalAlignment="Left" Height="25" Margin="310,29,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="191" Grid.Row="1"/>
-        <Label x:Name="label1" Content="Имя" HorizontalAlignment="Left" Height="36" Margin="14,25,0,0" VerticalAlignment="Top" Width="89" FontSize="16" Grid.Row="1"/>
-        <Label x:Name="label2" Content="Фамилия (поле для выбора клиента)" HorizontalAlignment="Left" Height="31" Margin="12,55,0,0" VerticalAlignment="Top" Width="279" FontSize="16" Grid.Row="1"/>
-        <Label x:Name="label3" Content="Отчество" HorizontalAlignment="Left" Height="30" Margin="12,115,0,0" VerticalAlignment="Top" Width="94" FontSize="16" Grid.Row="1"/>
-        <Label x:Name="label4" Content="Номер телефона" HorizontalAlignment="Left" Height="28" Margin="11,143,0,0" VerticalAlignment="Top" Width="152" RenderTransformOrigin="0.38,0.577" FontSize="16" Grid.Row="1"/>
-        <Label x:Name="label5" Content="Серия и номер паспорта" HorizontalAlignment="Left" Height="31" Margin="10,171,0,0" VerticalAlignment="Top" Width="192" FontSize="16" Grid.Row="1"/>
-        <Button x:Name="button" Content="Внести изменения" HorizontalAlignment="Left" Height="29" Margin="22,390,0,0" Grid.Row="1" VerticalAlignment="Top" Width="377" Click="button_Click"/>
-        <ComboBox x:Name="cbLastName" HorizontalAlignment="Left" Height="24" Margin="310,59,0,0" Grid.Row="1" VerticalAlignment="Top" Width="191" SelectionChanged="comboBox1_SelectionChanged"/>
-        <Button x:Name="button1" Content="Добавить информацию" HorizontalAlignment="Left" Height="28" Margin="22,424,0,0" Grid.Row="1" VerticalAlignment="Top" Width="377" Click="button1_Click"/>
-        <Label x:Name="label6" Content="Фамилия (поле для редактирования)" HorizontalAlignment="Left" Height="29" Margin="12,86,0,0" Grid.Row="1" VerticalAlignment="Top" Width="291" FontSize="16"/>
-        <TextBox x:Name="tbLastName" HorizontalAlignment="Left" Height="24" Margin="310,89,0,0" Grid.Row="1" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="191"/>
-        <TextBox x:Name="tbMiddleName" HorizontalAlignment="Left" Height="24" Margin="310,118,0,0" Grid.Row="1" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="191"/>
-        <TextBox x:Name="tbNumberTel" HorizontalAlignment="Left" Height="24" Margin="310,147,0,0" Grid.Row="1" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="191"/>
-        <TextBox x:Name="tbPassport" HorizontalAlignment="Left" Height="24" Margin="310,176,0,0" Grid.Row="1" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="191"/>
-        <Button x:Name="button2" Content="Загрузить данные в программу" HorizontalAlignment="Left" Height="29" Margin="22,356,0,0" Grid.Row="1" VerticalAlignment="Top" Width="377" Click="button2_Click"/>
-        <ComboBox x:Name="cbUser" HorizontalAlignment="Left" Height="31" Margin="22,74,0,0" VerticalAlignment="Top" Width="226">
+        <Label x:Name="label" Content="Пользователь" HorizontalAlignment="Left" Height="34" Margin="14,6,0,0" VerticalAlignment="Top" Width="181" FontSize="16"/>
+        <TextBox x:Name="tbFirstName" HorizontalAlignment="Left" Height="25" Margin="211,109,0,0" TextWrapping="Wrap"
+                 Text="{Binding ElementName=lvClients, Path=SelectedItem.FirstName}" VerticalAlignment="Top" Width="191" Grid.Row="1"/>
+        <Label x:Name="label1" Content="Имя" HorizontalAlignment="Left" Height="30" Margin="17,108,0,0" VerticalAlignment="Top" Width="89" FontSize="16" Grid.Row="1"/>
+        <Label x:Name="label3" Content="Отчество" HorizontalAlignment="Left" Height="30" Margin="17,166,0,0" VerticalAlignment="Top" Width="94" FontSize="16" Grid.Row="1"/>
+        <Label x:Name="label4" Content="Номер телефона" HorizontalAlignment="Left" Height="30" Margin="17,194,0,0" VerticalAlignment="Top" Width="152" RenderTransformOrigin="0.38,0.577" FontSize="16" Grid.Row="1"/>
+        <Label x:Name="label5" Content="Серия и номер паспорта" HorizontalAlignment="Left" Height="30" Margin="17,223,0,0" VerticalAlignment="Top" Width="192" FontSize="16" Grid.Row="1"/>
+        <Button x:Name="editClient" Content="Внести изменения в запись о клиенте" HorizontalAlignment="Left" Height="29" Margin="25,305,0,0" Grid.Row="1" VerticalAlignment="Top" Width="377" Click="button_Click"/>
+        <Button x:Name="addClient" Content="Добавить клиента" HorizontalAlignment="Left" Height="28" Margin="25,339,0,0" Grid.Row="1" VerticalAlignment="Top" Width="377" Click="button1_Click"/>
+        <Label x:Name="label6" Content="Фамилия" HorizontalAlignment="Left" Height="30" Margin="17,137,0,0" Grid.Row="1" VerticalAlignment="Top" Width="94" FontSize="16"/>
+        <TextBox x:Name="tbLastName" HorizontalAlignment="Left" Height="24" Margin="211,139,0,0" Grid.Row="1" TextWrapping="Wrap"
+                 Text="{Binding ElementName=lvClients, Path=SelectedItem.LastName}" VerticalAlignment="Top" Width="191"/>
+        <TextBox x:Name="tbMiddleName" HorizontalAlignment="Left" Height="24" Margin="211,168,0,0" Grid.Row="1" TextWrapping="Wrap"
+                 Text="{Binding ElementName=lvClients, Path=SelectedItem.MiddleName}" VerticalAlignment="Top" Width="191"/>
+        <TextBox x:Name="tbNumberTel" HorizontalAlignment="Left" Height="24" Margin="211,197,0,0" Grid.Row="1" TextWrapping="Wrap"
+                 Text="{Binding ElementName=lvClients, Path=SelectedItem.NumberTel}" VerticalAlignment="Top" Width="191"/>
+        <TextBox x:Name="tbPassport" HorizontalAlignment="Left" Height="24" Margin="211,226,0,0" Grid.Row="1" TextWrapping="Wrap"
+                 Text="{Binding ElementName=lvClients, Path=SelectedItem.SerialAndNumbeOfPassport}" VerticalAlignment="Top" Width="191"/>
+        <Button x:Name="btnLoad" Content="Загрузить данные в программу" HorizontalAlignment="Left" Height="29" Margin="25,271,0,0" Grid.Row="1" VerticalAlignment="Top" Width="377" Click="button2_Click"/>
+        <ComboBox x:Name="cbUser" HorizontalAlignment="Left" Height="31" Margin="14,40,0,0" VerticalAlignment="Top" Width="226">
             <ComboBoxItem Content="Консультант"/>
             <ComboBoxItem Content="Менеджер"/>
         </ComboBox>
-        <TextBox x:Name="tbDate" HorizontalAlignment="Left" Height="25" Margin="310,205,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="191"/>
-        <TextBox x:Name="tbCorrect" HorizontalAlignment="Left" Height="25" Margin="310,235,0,0" Grid.Row="1" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="191"/>
-        <TextBox x:Name="tbType" HorizontalAlignment="Left" Height="25" Margin="310,265,0,0" Grid.Row="1" TextWrapping="Wrap" VerticalAlignment="Top" Width="191"/>
-        <TextBox x:Name="tbUser" HorizontalAlignment="Left" Height="26" Margin="310,295,0,0" Grid.Row="1" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="191"/>
+        <ListView x:Name="lvClients" HorizontalAlignment="Left" Height="401" Margin="175,13,0,0" Grid.RowSpan="2" VerticalAlignment="Top" Width="605" Grid.Column="1">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Width="120" DisplayMemberBinding="{Binding LastName}">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Content="Фамилия"/>
+                        </GridViewColumn.Header>
+                    </GridViewColumn>
+                    <GridViewColumn Width="120" DisplayMemberBinding="{Binding FirstName}">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Content="Имя"/>
+                        </GridViewColumn.Header>
+                    </GridViewColumn>
+                    <GridViewColumn Width="120" DisplayMemberBinding="{Binding MiddleName}">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Content="Отчество"/>
+                        </GridViewColumn.Header>
+                    </GridViewColumn>
+                    <GridViewColumn Width="120" DisplayMemberBinding="{Binding NumberTel}">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Content="Номер телефона"/>
+                        </GridViewColumn.Header>
+                    </GridViewColumn>
+                    <GridViewColumn Width="120" DisplayMemberBinding="{Binding SerialAndNumbeOfPassport}">
+                        <GridViewColumn.Header>
+                            <GridViewColumnHeader Content="Паспорт"/>
+                        </GridViewColumn.Header>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Label x:Name="label2" Content="Департамент" HorizontalAlignment="Left" Height="30" Margin="17,26,0,0" Grid.Row="1" VerticalAlignment="Top" Width="188" FontSize="16"/>
+        <ListView x:Name="lvDepartaments" Grid.Column="1" HorizontalAlignment="Left" Height="401" Margin="10,13,0,0" Grid.RowSpan="2" VerticalAlignment="Top" Width="160" SelectionChanged="lvDepartaments_SelectionChanged">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Width="150" Header="Департамент" DisplayMemberBinding="{Binding Name}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <TextBox x:Name="tbDep"
+                 HorizontalAlignment="Left" Height="25" Margin="211,28,0,0" Grid.Row="1" TextWrapping="Wrap"
+                 Text="{Binding ElementName=lvDepartaments, Path=SelectedItem.Name}" VerticalAlignment="Top" Width="191"/>
+        <Button x:Name="btnDelClient" Content="Удалить информацию о клиенте" HorizontalAlignment="Left" Height="31" Margin="25,372,0,0" Grid.Row="1" VerticalAlignment="Top" Width="377" Click="button3_Click"/>
+        <Button x:Name="addDepartament" Content="Добавить департамент" HorizontalAlignment="Left" Height="30" Margin="25,66,0,0" Grid.Row="1" VerticalAlignment="Top" Width="377" Click="button4_Click"/>
     </Grid>
 </Window>

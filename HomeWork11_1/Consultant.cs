@@ -10,9 +10,8 @@ namespace HomeWork11_1
 {
     class Consultant : BankClient
     { 
-        public Consultant(string FirstName, string LastName, string MiddleName, string NumberTel, string SerialAndNumberOfPassport,
-            string Date, string CorrectFields, string TypeFields, string User)
-            : base(FirstName, LastName, MiddleName, NumberTel, SerialAndNumberOfPassport, Date, CorrectFields, TypeFields, User)
+        public Consultant(string FirstName, string LastName, string MiddleName, string NumberTel, string SerialAndNumbeOfPassport, int DepartamentID)
+            : base(FirstName, LastName, MiddleName, NumberTel, SerialAndNumbeOfPassport, DepartamentID)
         {
             
         }
@@ -26,10 +25,10 @@ namespace HomeWork11_1
                 List<Consultant> consultant = new List<Consultant>();
                 consultant = JsonConvert.DeserializeObject<List<Consultant>>(json);
                 JsonConvert.SerializeObject(file);
-                M.cbLastName.Items.Clear();
+                //M.cbLastName.Items.Clear();
                 foreach (var item in consultant)
                 {
-                    M.cbLastName.Items.Add(item.LastName);
+                //    M.cbLastName.Items.Add(item.LastName);
                 }
                 M.tbFirstName.Text = consultant[0].FirstName;
                 M.tbLastName.Text = consultant[0].LastName;
