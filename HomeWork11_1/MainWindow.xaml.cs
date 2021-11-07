@@ -39,7 +39,6 @@ namespace HomeWork11_1
             InitializeComponent();
             cbUser.Text = "Консультант";
         }
-
         private void button_Click(object sender, RoutedEventArgs e)
         {
             if(cbUser.Text == "Консультант")
@@ -49,7 +48,7 @@ namespace HomeWork11_1
             else
             {
                 Manager.EditClient(this);
-                MessageBox.Show("");
+                MessageBox.Show("Запись о клиенте изменена");
             }
         }
         private void button1_Click(object sender, RoutedEventArgs e)
@@ -64,7 +63,6 @@ namespace HomeWork11_1
                 MessageBox.Show("Консультант не может добавлять клиентов");
             }
         }
-
         private void button2_Click(object sender, RoutedEventArgs e)
         {
             if (File.Exists("Departaments.json"))
@@ -77,7 +75,6 @@ namespace HomeWork11_1
             }
             else MessageBox.Show("Нет списка департаментов");
         }
-
         private void lvDepartaments_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             json = File.ReadAllText("Clients.json");
@@ -93,26 +90,23 @@ namespace HomeWork11_1
             }
             lvClients.ItemsSource = Clients.Where(findID);          
         }
-
-        private bool findID(BankClient arg)
-        {
-            return arg.DepartamentID == (lvDepartaments.SelectedItem as Departament).DepartamentID;
-        }
-
         private void button3_Click(object sender, RoutedEventArgs e)
         {
-            if(File.Exists("Clients.json"))
+            if (cbUser.Text == "Менеджер")
             {
-                json = File.ReadAllText("Clients.json");
-                List<BankClient> Clients = new List<BankClient>();
-                Clients = JsonConvert.DeserializeObject<List<BankClient>>(json);
-                Clients.RemoveAt(lvClients.SelectedIndex);
-                json = JsonConvert.SerializeObject(Clients);
-                File.WriteAllText("Clients.json",json);
-                MessageBox.Show("Запись удалена");
+                if (File.Exists("Clients.json"))
+                {
+                    json = File.ReadAllText("Clients.json");
+                    List<BankClient> Clients = new List<BankClient>();
+                    Clients = JsonConvert.DeserializeObject<List<BankClient>>(json);
+                    Clients.RemoveAt(lvClients.SelectedIndex);
+                    json = JsonConvert.SerializeObject(Clients);
+                    File.WriteAllText("Clients.json", json);
+                    MessageBox.Show("Запись удалена");
+                }
             }
+            else MessageBox.Show("Консультант не может удалять данные о клиентах");
         }
-
         private void button4_Click(object sender, RoutedEventArgs e)
         {
             if (cbUser.Text == "Менеджер")
@@ -120,8 +114,12 @@ namespace HomeWork11_1
                 Manager.AddDepartament(this);
                 MessageBox.Show("Депаратмент добавлен");
             }
+            else MessageBox.Show("Консультант не может добавлять департаменты");
         }
-
+        private bool findID(BankClient arg)
+        {
+            return arg.DepartamentID == (lvDepartaments.SelectedItem as Departament).DepartamentID;
+        }
         private void tbDep_TextChanged(object sender, TextChangedEventArgs e)
         {
             if(cbUser.Text == "Консультант")
