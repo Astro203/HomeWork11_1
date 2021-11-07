@@ -15,28 +15,6 @@ namespace HomeWork11_1
         {
             
         }
-
-        public void GetInfo(MainWindow M)
-        {
-            string file = "Client.json";
-            if (File.Exists(file))
-            {
-                string json = File.ReadAllText(file);
-                List<Consultant> consultant = new List<Consultant>();
-                consultant = JsonConvert.DeserializeObject<List<Consultant>>(json);
-                JsonConvert.SerializeObject(file);
-                //M.cbLastName.Items.Clear();
-                foreach (var item in consultant)
-                {
-                //    M.cbLastName.Items.Add(item.LastName);
-                }
-                M.tbFirstName.Text = consultant[0].FirstName;
-                M.tbLastName.Text = consultant[0].LastName;
-                M.tbMiddleName.Text = consultant[0].MiddleName;
-                M.tbNumberTel.Text = consultant[0].NumberTel;
-                M.tbPassport.Text = "****************";
-            }
-        }
         public void EditInfo(string NumberTel)
         {
             base.NumberTel = NumberTel;

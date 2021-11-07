@@ -121,5 +121,17 @@ namespace HomeWork11_1
                 MessageBox.Show("Депаратмент добавлен");
             }
         }
+
+        private void tbDep_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if(cbUser.Text == "Консультант")
+            {
+
+            }
+            else
+            {
+
+            }
+        }
     }
 }

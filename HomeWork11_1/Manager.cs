@@ -42,20 +42,18 @@ namespace HomeWork11_1
         {
             string json = "";
             string file = "Client.json";
-            List<Manager> manager = new List<Manager>();
+            List<Manager> clients = new List<Manager>();
             if (File.Exists(file))
             {
                 json = File.ReadAllText(file);
-                manager = JsonConvert.DeserializeObject<List<Manager>>(json);
-                manager.Add
-                    (new Manager(
-                         M.tbFirstName.Text,
-                         M.tbLastName.Text,
-                         M.tbMiddleName.Text,
-                         M.tbNumberTel.Text,
-                         M.tbPassport.Text,
-                         2));
-                json = JsonConvert.SerializeObject(manager);
+                clients = JsonConvert.DeserializeObject<List<Manager>>(json);
+                BankClient client = (BankClient)M.lvClients.SelectedItem;
+                client.LastName = M.tbLastName.Text;
+                client.FirstName = M.tbFirstName.Text;
+                client.MiddleName = M.tbMiddleName.Text;
+                client.NumberTel = M.tbNumberTel.Text;
+                client.SerialAndNumbeOfPassport = M.tbPassport.Text;
+                json = JsonConvert.SerializeObject(clients);
                 File.WriteAllText(file, json);
             }          
         }
@@ -63,13 +61,13 @@ namespace HomeWork11_1
         {
             string json = "";
             string file = "Client.json";
-            List<Manager> manager = new List<Manager>();
+            List<Manager> clients = new List<Manager>();
             if (File.Exists(file))
             {
                 json = File.ReadAllText(file);
-                manager = JsonConvert.DeserializeObject<List<Manager>>(json);
+                clients = JsonConvert.DeserializeObject<List<Manager>>(json);
             }
-            manager.Add(
+            clients.Add(
                 new Manager(
                     M.tbFirstName.Text,
                     M.tbLastName.Text,
@@ -77,7 +75,7 @@ namespace HomeWork11_1
                     M.tbNumberTel.Text,
                     M.tbPassport.Text,
                     findDepID(M.lvDepartaments.SelectedItem.ToString())));
-            json = JsonConvert.SerializeObject(manager);
+            json = JsonConvert.SerializeObject(clients);
             File.WriteAllText(file, json);
         }
 
