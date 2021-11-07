@@ -36,6 +36,15 @@ namespace HomeWork11_1
                 json = JsonConvert.SerializeObject(departament);
                 File.WriteAllText(file, json);
             }
+            else
+            {
+                departament.Add
+                    (new Departament(
+                         M.tbDep.Text,
+                         0));
+                json = JsonConvert.SerializeObject(departament);
+                File.WriteAllText(file, json);
+            }
             M.lvDepartaments.ItemsSource = departament;
         }
         public static void EditClient(MainWindow M)
